@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Form Peminjaman Ruangan - SmartDoor Access</title>
+<meta name="description" content="Form Peminjaman Ruangan dengan integrasi WhatsApp dan spreadsheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+<style>
+  /* Reset & base */
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+  body {
+    margin: 0;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #db2828 0%, #2062f7 70%, #f3eadb 100%);
+    color: #1e1e1e;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 32px 16px 64px;
+  }
+  /* Container */
+  .container {
+    background: rgba(243,234,219,0.95);
+    max-width: 480px;
+    width: 100%;
+    border-radius: 16px;
+    padding: 32px 32px 40px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  }
+  h1 {
+    font-weight: 700;
+    font-size: 1.9rem;
+    margin-bottom: 12px;
+    color: #2062f7;
+    text-align: center;
+  }
+  p.instruction {
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 28px;
+    color: #db2828;
+    font-size: 1rem;
+  }
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  label {
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #2062f7;
+  }
+  .material-icons {
+    font-size: 20px;
+    color: #db2828;
+  }
+  input[type="text"],
+  input[type="date"],
+  input[type="tel"],
+  select {
+    padding: 12px 16px;
+    font-size: 1rem;
+    border-radius: 12px;
+    border: 2px solid #2062f7;
+    transition: border-color 0.3s ease;
+    width: 100%;
+    color: #1e1e1e;
+  }
+  input[type="text"]:focus,
+  input[type="date"]:focus,
+  input[type="tel"]:focus,
+  select:focus {
+    outline: none;
+    border-color: #db2828;
+  }
+  /* Waktu Peminjaman checkboxes group */
+  .time-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .time-checkboxes label {
+    flex: 1 1 45%;
+    background: #2062f7;
+    color: white;
+    border-radius: 12px;
+    padding: 10px 0;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    transition: background-color 0.3s ease;
+  }
+  .time-checkboxes input[type="checkbox"] {
+    opacity: 0;
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    cursor: pointer;
+  }
+  .time-checkboxes input[type="checkbox"]:checked + span {
+    background: #db2828;
+    box-shadow: 0 0 8px #db2828;
+  }
+  .time-checkboxes span {
+    display: block;
+    padding-left: 36px;
+    position: relative;
+  }
+  .time-checkboxes span::before {
+    content: 'check_circle';
+    font-family: 'Material Icons';
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #f3eadb;
+    font-size: 20px;
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+  }
+  .time-checkboxes input[type="checkbox"]:checked + span::before {
+    opacity: 1;
+  }
+  button[type="submit"] {
+    background: #db2828;
+    color: #f3eadb;
+    font-weight: 700;
+    padding: 14px;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  button[type="submit"]:hover,
+  button[type="submit"]:focus {
+    background: #a31f1f;
+    outline: none;
+  }
+  /* Responsive */
+  @media (max-width: 480px) {
+    .time-checkboxes label {
+      flex: 1 1 100%;
+    }
+  }
+  /* Error message style */
+  .error-message {
+    color: #db2828;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-top: -12px;
+  }
+</style>
+</head>
+<body>
+  <main class="container" role="main" aria-label="Form Peminjaman Ruangan">
+    <h1>Form Peminjaman Ruangan</h1>
+    <p class="instruction" aria-live="polite">Untuk mendapatkan kode SmartDoor, harap isi form peminjaman ruangan dengan lengkap.</p>
+    <form id="booking-form" action="https://script.google.com/macros/s/AKfycbyqY9-LJJJ-BtATU0MOCcXTTLexe6bxHQgeCG_RBFpoDXZQZ8zMsXWW6WWgGaze4Rxfew/exec" method="POST" novalidate>
+      <div>
+        <label for="nama"><span class="material-icons" aria-hidden="true">person</span>Nama Lengkap</label>
+        <input type="text" id="nama" name="nama" required aria-required="true" aria-describedby="nama-error" placeholder="Masukkan nama lengkap" />
+        <div id="nama-error" class="error-message" aria-live="assertive"></div>
+      </div>
+      <div>
+        <label for="subseksi"><span class="material-icons" aria-hidden="true">group_work</span>Subseksi / Wilayah / Acara</label>
+        <input type="text" id="subseksi" name="subseksi" required aria-required="true" aria-describedby="subseksi-error" placeholder="Masukkan subseksi, wilayah atau acara" />
+        <div id="subseksi-error" class="error-message" aria-live="assertive"></div>
+      </div>
+      <div>
+        <label for="ruangan"><span class="material-icons" aria-hidden="true">meeting_room</span>Ruangan</label>
+        <select id="ruangan" name="ruangan" required aria-required="true" aria-describedby="ruangan-error" >
+          <option value="" disabled selected>Pilih ruangan</option>
+          <option value="Kevin">Kevin</option>
+          <option value="Natalia">Natalia</option>
+        </select>
+        <div id="ruangan-error" class="error-message" aria-live="assertive"></div>
+      </div>
+      <div>
+        <label for="tanggal"><span class="material-icons" aria-hidden="true">calendar_today</span>Tanggal Peminjaman</label>
+        <input type="date" id="tanggal" name="tanggal" required aria-required="true" aria-describedby="tanggal-error" min="" />
+        <div id="tanggal-error" class="error-message" aria-live="assertive"></div>
+      </div>
+      <fieldset>
+  <legend><span class="material-icons" aria-hidden="true">schedule</span>Waktu Peminjaman</legend>
+  <div class="time-checkboxes" role="group" aria-labelledby="waktu-label" aria-describedby="waktu-error">
+    <p style="color:#999;">Silakan pilih ruangan dan tanggal untuk melihat waktu yang tersedia.</p>
+  </div>
+  <div id="waktu-error" class="error-message" aria-live="assertive"></div>
+</fieldset>
+
+      <div>
+        <label for="wa"><span class="material-icons" aria-hidden="true">phone_iphone</span>No WhatsApp</label>
+        <input type="tel" id="wa" name="wa" placeholder="081234567890" pattern="^08[0-9]{8,12}$" required aria-required="true" aria-describedby="wa-error" />
+        <div id="wa-error" class="error-message" aria-live="assertive"></div>
+      </div>
+      <div>
+        <label for="Alasan"><span class="material-icons" aria-hidden="true">book</span>Alasan Pemakaian Ruangan</label>
+        <input type="text" id="Alasan" name="Alasan" required aria-required="true" aria-describedby="Alasan-error" placeholder="Masukkan Alasanmu!" />
+        <div id="Alasan-error" class="error-message" aria-live="assertive"></div>
+      </div>
+      <button type="submit" aria-label="Submit form peminjaman ruangan">Kirim Permintaan</button>
+    </form>
+  </main>
+
+<script>
+  // Set minimum date as today for tanggal peminjaman input
+  const tanggalInput = document.getElementById('tanggal');
+  const todayISO = new Date().toISOString().split('T')[0];
+  tanggalInput.setAttribute('min', todayISO);
+
+  const form = document.getElementById('booking-form');
+
+  function showError(fieldId, message) {
+    const errorDiv = document.getElementById(fieldId + '-error');
+    if (errorDiv) {
+      errorDiv.textContent = message;
+    }
+  }
+  function clearErrors() {
+    ['nama', 'subseksi', 'ruangan', 'tanggal', 'waktu', 'wa'].forEach(id => {
+      showError(id, '');
+    });
+  }
+
+  form.addEventListener('submit', async function(event) {
+    event.preventDefault();
+    clearErrors();
+
+    const nama = form.nama.value.trim();
+    const subseksi = form.subseksi.value.trim();
+    const ruangan = form.ruangan.value;
+    const tanggal = form.tanggal.value;
+    const waktuElems = form.querySelectorAll('input[name="waktu"]:checked');
+    const wa = form.wa.value.trim();
+    const Alasan = form.Alasan.value.trim();
+
+    let isValid = true;
+
+    if (!nama) {
+      showError('nama', 'Nama harus diisi.');
+      isValid = false;
+    }
+    if (!Alasan) {
+      showError('Alasan', 'Alasan Harus Diisi!.');
+      isValid = false;
+    }
+    if (!subseksi) {
+      showError('subseksi', 'Subseksi/Wilayah/Acara harus diisi.');
+      isValid = false;
+    }
+    if (!ruangan) {
+      showError('ruangan', 'Ruangan harus dipilih.');
+      isValid = false;
+    }
+    if (!tanggal) {
+      showError('tanggal', 'Tanggal Peminjaman harus diisi.');
+      isValid = false;
+    } else if (tanggal < todayISO) {
+      showError('tanggal', 'Tanggal tidak boleh sebelum hari ini.');
+      isValid = false;
+    }
+    if (waktuElems.length === 0) {
+      showError('waktu', 'Pilih minimal satu waktu peminjaman.');
+      isValid = false;
+    }
+    // WhatsApp number pattern verification
+    const waPattern = /^08[0-9]{8,12}$/;
+    if (!wa) {
+      showError('wa', 'Nomor WhatsApp harus diisi.');
+      isValid = false;
+    } else if (!waPattern.test(wa)) {
+      showError('wa', 'Format nomor WhatsApp tidak valid (contoh: 081234567890).');
+      isValid = false;
+    }
+
+    if (!isValid) return;
+
+    // Prepare data for Google Form submission
+    const formData = new FormData(form);
+
+    try {
+      // Submit to Google Apps Script
+      const response = await fetch(form.action, {
+        method: 'POST',
+        body: formData
+      });
+      if (response.ok) {
+        const redirectMsg = encodeURIComponent(
+  `Halo PIC Ruangan,\n` +
+  `Saya ingin mengajukan peminjaman ruangan sebagai berikut:\n\n` +
+  `Nama Lengkap: ${nama}\n` +
+  `Subseksi/Wilayah/Acara: ${subseksi}\n` +
+  `Ruangan: ${ruangan}\n` +
+  `Tanggal: ${tanggal}\n` +
+  `Waktu: ${Array.from(waktuElems).map(el => el.value).join(', ')}\n` +
+  `No. WhatsApp: ${wa}\n` +
+  `Alasan: ${Alasan}\n\n` +
+  `Mohon konfirmasi dan bantuannya untuk akses smart door. Terima kasih. 🙏`
+);
+        window.location.href = `https://wa.me/6281398666336?text=${redirectMsg}`;
+      } else {
+        alert('Terjadi kesalahan saat menyimpan data.');
+      }
+    } catch (e) {
+      console.error('Error:', e);
+      alert('Terjadi kesalahan saat menyimpan data.');
+    }
+  });
+
+  async function fetchBookedTimes() {
+    const res = await fetch('https://script.google.com/macros/s/AKfycbyqY9-LJJJ-BtATU0MOCcXTTLexe6bxHQgeCG_RBFpoDXZQZ8zMsXWW6WWgGaze4Rxfew/exec');
+    const data = await res.json();
+    return data;
+  }
+
+ async function updateDisabledCheckboxes() {
+  console.log("Memeriksa jam yang terpakai...");
+
+  const tanggal = document.getElementById('tanggal').value;
+  const ruangan = document.getElementById('ruangan').value;
+
+  if (!tanggal || !ruangan) return;
+
+  const booked = await fetchBookedTimes();
+  console.log("Data yang diambil dari spreadsheet:", booked);
+
+  const allWaktu = [
+    "08:00-09:00", "09:00-10:00", "10:00-11:00", "11:00-12:00",
+    "13:00-14:00", "14:00-15:00", "15:00-16:00", "16:00-17:00",
+    "17:00-18:00", "18:00-19:00", "19:00-20:00", "20:00-21:00"
+  ];
+
+  let waktuTerpakai = [];
+  booked.forEach(entry => {
+    if (entry.tanggal === tanggal && entry.ruangan === ruangan) {
+      waktuTerpakai = waktuTerpakai.concat(entry.waktu);
+    }
+  });
+
+  console.log("Waktu yang sudah terpakai:", waktuTerpakai);
+
+  const container = document.querySelector(".time-checkboxes");
+  container.innerHTML = "";
+
+  allWaktu.forEach(waktu => {
+    if (!waktuTerpakai.includes(waktu)) {
+      const label = document.createElement("label");
+
+      const input = document.createElement("input");
+      input.type = "checkbox";
+      input.name = "waktu";
+      input.value = waktu;
+
+      const span = document.createElement("span");
+      span.textContent = waktu.replace("-", " - ");
+
+      label.appendChild(input);
+      label.appendChild(span);
+
+      container.appendChild(label);
+    }
+  });
+
+  if (container.children.length === 0) {
+    container.innerHTML = "<p style='color:#db2828; font-weight:bold;'>Semua jam sudah penuh untuk ruangan dan tanggal ini.</p>";
+  }
+}
+
+  // Panggil saat user memilih tanggal/ruangan
+  document.getElementById('tanggal').addEventListener('change', updateDisabledCheckboxes);
+  document.getElementById('ruangan').addEventListener('change', updateDisabledCheckboxes);
+
+</script>
+
+</body>
+</html>

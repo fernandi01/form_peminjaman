@@ -18,11 +18,11 @@
     <form name="bookingForm" ng-submit="submitForm()" novalidate>
       <div>
         <label>Nama Lengkap</label>
-        <input type="text" name="nama" ng-model="formData.nama" required />
+        <input type="text" name="nama" ng-model="formData.nama" placeholder="Masukkan nama lengkap" required />
       </div>
       <div>
         <label>Subseksi / Wilayah / Acara</label>
-        <input type="text" name="subseksi" ng-model="formData.subseksi" required />
+        <input type="text" name="subseksi" ng-model="formData.subseksi" placeholder="Masukkan subseksi, wilayah atau acara" required />
       </div>
       <div>
         <label>Ruangan</label>
@@ -48,18 +48,18 @@
                 </div>
             </div>
           <label ng-repeat="waktu in waktuTersedia" ng-class="waktu.checked ? 'time-checkboxes-checked' : 'time-checkboxes'">
-            <input type="checkbox" name="waktu" ng-value="waktu.label" ng-checked="waktu.checked" ng-disabled="waktu.disabled" ng-click="toggleWaktu(waktu)" />
+            <input type="checkbox" name="waktu" ng-value="waktu.label" ng-checked="waktu.checked" ng-click="toggleWaktu(waktu)" />
             <span>{{ waktu.label }}</span>
           </label>
         </div>
       </fieldset>
       <div>
         <label>No WhatsApp</label>
-        <input type="tel" name="wa" ng-model="formData.wa" ng-pattern="/^08[0-9]{8,12}$/" required />
+        <input type="tel" name="wa" ng-model="formData.wa" ng-pattern="/^08[0-9]{8,12}$/" placeholder="081234567890" required />
       </div>
       <div>
         <label>Alasan Pemakaian Ruangan</label>
-        <input type="text" name="Alasan" ng-model="formData.Alasan" required />
+        <input type="text" name="Alasan" ng-model="formData.Alasan" placeholder="Masukkan Alasanmu!" required />
       </div>
       <button type="submit">Kirim Permintaan</button>
     </form>

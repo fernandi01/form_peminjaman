@@ -5,13 +5,19 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Form Peminjaman Ruangan - SmartDoor Access</title>
   <meta name="description" content="Form Peminjaman Ruangan dengan integrasi WhatsApp dan spreadsheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
   <link rel="stylesheet" href="../styles/form.css">
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 </head>
 <body ng-controller="FormController">
   <main class="container" role="main" ng-show="!done">
+    <!-- Tambahkan di dalam div.container -->
+<div class="logo-container">
+  <img src="../image/logo2.png" alt="Logo KTG" class="logo-img" />
+</div>
     <div>
     <h1>Form Peminjaman Ruangan</h1>
     <p class="instruction">Untuk mendapatkan kode SmartDoor, harap isi form peminjaman ruangan dengan lengkap.</p>

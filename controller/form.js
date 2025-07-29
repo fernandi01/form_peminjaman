@@ -48,7 +48,7 @@ angular.module('formApp', [])
             `Alasan: ${payload.Alasan}%0A%0A` +
             `Mohon konfirmasi dan bantuannya untuk akses smart door. Terima kasih.`;
 
-          window.location.href = `https://wa.me/6281398666336?text=${msg}`;
+          window.location.href = `https://wa.me/6285117552527?text=${msg}`;
         }, function error() {
           alert('Gagal mengirim data.');
         });

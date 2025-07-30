@@ -57,8 +57,14 @@
                     <div></div>
                 </div>
             </div>
-          <label ng-repeat="waktu in waktuTersedia" ng-class="waktu.checked ? 'time-checkboxes-checked' : 'time-checkboxes'">
-            <input type="checkbox" name="waktu" ng-value="waktu.label" ng-checked="waktu.checked" ng-click="toggleWaktu(waktu)" />
+          <label ng-repeat="waktu in waktuTersedia"
+       ng-class="waktu.disabled ? 'time-checkboxes-disabled' : (waktu.checked ? 'time-checkboxes-checked' : 'time-checkboxes')">
+            <input type="checkbox"
+                  name="waktu"
+                  ng-value="waktu.label"
+                  ng-checked="waktu.checked"
+                  ng-click="toggleWaktu(waktu)"
+                  ng-disabled="waktu.disabled" />
             <span>{{ waktu.label }}</span>
           </label>
         </div>

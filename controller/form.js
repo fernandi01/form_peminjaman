@@ -11,47 +11,59 @@ angular.module('formApp', [])
       };
 
       $scope.submitForm = function() {
-        $scope.done = true;
-
         const waktuTerpilih = $scope.waktuTersedia
           .filter(w => w.checked)
           .map(w => w.label);
 
         if ($scope.bookingForm.$invalid || waktuTerpilih.length === 0) {
-          alert('Mohon lengkapi semua field dan pilih waktu.');
-          return;
+          let msg = 'Mohon lengkapi semua field dan pilih waktu.\n';
+          if ($scope.bookingForm.nama.$invalid) msg += '- Nama belum diisi\n';
+          if ($scope.bookingForm.subseksi.$invalid) msg += '- Subseksi/Wilayah/Acara belum diisi\n';
+          if ($scope.bookingForm.ruangan.$invalid) msg += '- Ruangan belum dipilih\n';
+          if ($scope.bookingForm.tanggal.$invalid) msg += '- Tanggal belum diisi\n';
+          if (waktuTerpilih.length === 0) msg += '- Waktu belum dipilih\n';
+          if ($scope.bookingForm.wa.$invalid) msg += '- Nomor WhatsApp tidak valid\n';
+          if ($scope.bookingForm.Alasan.$invalid) msg += '- Alasan pemakaian belum diisi\n';
+          alert(msg);
         }
+        else{
+          if(waktuTerpilih.length > 3 && $scope.formData.ruangan !== 'Oliver') {
+            alert('Maksimal 3 jam pemakaian!');
+          }
+          else{
+          $scope.done = true;
+          const payload = Object.assign({}, $scope.formData);
+          payload.waktu = waktuTerpilih;
 
-        const payload = Object.assign({}, $scope.formData);
-        payload.waktu = waktuTerpilih;
+          const formEncoded = new URLSearchParams(payload).toString();
 
-        const formEncoded = new URLSearchParams(payload).toString();
+          const endpoint = "https://script.google.com/macros/s/AKfycbwk3iGg8luuMUahGj-GdwP3bZVmntvS_Snh5Hk0M1-3UAKzfoptPjUS7K1fdteBvwQFeg/exec";
 
-        const endpoint = "https://script.google.com/macros/s/AKfycbwk3iGg8luuMUahGj-GdwP3bZVmntvS_Snh5Hk0M1-3UAKzfoptPjUS7K1fdteBvwQFeg/exec";
+          $http({
+            method: 'POST',
+            url: endpoint,
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            data: formEncoded
+          }).then(function success() {
 
-        $http({
-          method: 'POST',
-          url: endpoint,
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-          data: formEncoded
-        }).then(function success() {
+            const msg =
+              `Halo PIC Ruangan,%0A` +
+              `Saya ingin mengajukan peminjaman ruangan:%0A%0A` +
+              `Nama: ${payload.nama}%0A` +
+              `Subseksi: ${payload.subseksi}%0A` +
+              `Ruangan: ${payload.ruangan}%0A` +
+              `Tanggal: ${payload.tanggal}%0A` +
+              `Waktu: ${payload.waktu.join(', ')}%0A` +
+              `WA: ${payload.wa}%0A` +
+              `Alasan: ${payload.Alasan}%0A%0A` +
+              `Mohon konfirmasi dan bantuannya untuk akses smart door. Terima kasih.`;
 
-          const msg =
-            `Halo PIC Ruangan,%0A` +
-            `Saya ingin mengajukan peminjaman ruangan:%0A%0A` +
-            `Nama: ${payload.nama}%0A` +
-            `Subseksi: ${payload.subseksi}%0A` +
-            `Ruangan: ${payload.ruangan}%0A` +
-            `Tanggal: ${payload.tanggal}%0A` +
-            `Waktu: ${payload.waktu.join(', ')}%0A` +
-            `WA: ${payload.wa}%0A` +
-            `Alasan: ${payload.Alasan}%0A%0A` +
-            `Mohon konfirmasi dan bantuannya untuk akses smart door. Terima kasih.`;
-
-          window.location.href = `https://wa.me/6285117552527?text=${msg}`;
-        }, function error() {
-          alert('Gagal mengirim data.');
-        });
+            window.location.href = `https://wa.me/6285117552527?text=${msg}`;
+          }, function error() {
+            alert('Gagal mengirim data.');
+          });
+        }
+        }
       };
 
       $scope.updateDisabledCheckboxes = function() {
@@ -75,26 +87,39 @@ angular.module('formApp', [])
             const selectedDate = new Date($scope.formData.tanggal).toDateString();
             const selectedRoom = $scope.formData.ruangan;
 
-            let waktuTerpakai = [];
-
-            booked.forEach(entry => {
-            const entryDate = new Date(entry.tanggal).toDateString();
-            if (entryDate === selectedDate && entry.ruangan === selectedRoom) {
-                if (entry.waktu.length > 0) {
-                const timeStr = entry.waktu[0];
-                const times = timeStr.split(',').map(t => t.trim());
-                waktuTerpakai = waktuTerpakai.concat(times);
-                }
+            if(selectedRoom === 'Oliver') {
+              const waktuTersisa = allWaktu.map(w => ({
+                label: w,
+                checked: false
+              }));
+              $scope.waktuTersedia = waktuTersisa;
+              $scope.waiting = false;
             }
-            });
+            else{
+              let waktuTerpakai = [];
 
-            const waktuTersisa = allWaktu.filter(w => !waktuTerpakai.includes(w));
+              booked.forEach(entry => {
+              const entryDate = new Date(entry.tanggal).toDateString();
+              if (entryDate === selectedDate && entry.ruangan === selectedRoom) {
+                  if (entry.waktu.length > 0) {
+                  const timeStr = entry.waktu[0];
+                  const times = timeStr.split(',').map(t => t.trim());
+                  waktuTerpakai = waktuTerpakai.concat(times);
+                  }
+              }
+              });
 
-            $scope.waktuTersedia = waktuTersisa.map(w => ({
-            label: w,
-            checked: false
-            }));
-            $scope.waiting = false;
+              const waktuTersisa = allWaktu.map(w => ({
+                label: w,
+                checked: false,
+                disabled: waktuTerpakai.includes(w)
+              }));
+
+              $scope.waktuTersedia = waktuTersisa;
+              $scope.waiting = false;
+            }
+
+            
         });
       };
     }]);

@@ -109,8 +109,23 @@
     transition: background-color 0.3s ease;
   }
 
+      .time-checkboxes-disabled {
+    flex: 1 1 45%;
+    background: #e0e0e0;
+    color: rgb(116, 108, 108);
+    border-radius: 12px;
+    padding: 10px 0;
+    font-weight: 600;
+    text-align: center;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    transition: background-color 0.3s ease;
+  }
+
 .time-checkboxes input[type="checkbox"],
-.time-checkboxes-checked input[type="checkbox"] {
+.time-checkboxes-checked input[type="checkbox"],
+.time-checkboxes-disabled input[type="checkbox"] {
   opacity: 0;
   position: absolute;
   left: 8px;
@@ -122,14 +137,15 @@
   cursor: pointer;
 }
 
-.time-checkboxes span, .time-checkboxes-checked span {
+.time-checkboxes span, .time-checkboxes-checked span, .time-checkboxes-disabled span {
   display: block;
   padding-left: 36px;
   position: relative;
 }
 
 .time-checkboxes span::before,
-.time-checkboxes-checked span::before {
+.time-checkboxes-checked span::before,
+.time-checkboxes-disabled span::before {
   content: 'check_circle';
   font-family: 'Material Icons';
   position: absolute;
@@ -143,7 +159,8 @@
 }
 
 .time-checkboxes input[type="checkbox"]:checked + span::before,
-.time-checkboxes-checked input[type="checkbox"]:checked + span::before {
+.time-checkboxes-checked input[type="checkbox"]:checked + span::before,
+.time-checkboxes-disabled input[type="checkbox"]:checked + span::before {
   opacity: 1;
 }
 

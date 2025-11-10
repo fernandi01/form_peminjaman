@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="id" ng-app="formApp">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Menu Utama - SmartDoor Access</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/home.css">
+</head>
+<body ng-controller="HomeController">
+  <main class="container" role="main">
+    <div class="logo-container">
+      <img src="../image/logo2.png" alt="Logo KTG" class="logo-img" />
+    </div>
+    <h1>Pilih Jenis Akses</h1>
+    <p class="instruction">Halo, {{ user.nama }}! Silakan pilih layanan yang Anda butuhkan.</p>
+    
+    <div class="menu-options">
+      <a href="form.html" class="menu-card">
+        <span class="material-icons">meeting_room</span>
+        <h2>Minjem Ruangan</h2>
+        <p>Booking Ruangan Kevin, Natalia, dll. (Kode Akses SmartDoor)</p>
+      </a>
+
+      <a href="oliver-menu.html" class="menu-card primary">
+        <span class="material-icons">inventory_2</span>
+        <h2>Minjem Oliver (Gudang)</h2>
+        <p>Peminjaman, Pengembalian, Penitipan, atau Pengecekan Inventaris.</p>
+      </a>
+
+      <a href="viewData.html" class="menu-card secondary">
+        <span class="material-icons">history</span>
+        <h2>Riwayat Saya</h2>
+        <p>Lihat semua daftar peminjaman dan booking Anda.</p>
+      </a>
+    </div>
+
+    <div class="logout-link">
+        <a href="#" ng-click="logout()">Logout</a>
+    </div>
+
+  </main>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="../controller/home.js"></script> </body>
+</html>

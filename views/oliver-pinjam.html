@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id" ng-app="formApp">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pinjam Barang Oliver - SmartDoor Access</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/form.css">
+</head>
+<body ng-controller="OliverController">
+  <main class="container" role="main" ng-show="!done">
+    <div class="logo-container">
+      <img src="../image/logo2.png" alt="Logo KTG" class="logo-img" />
+    </div>
+    <h1>Form Peminjaman Barang Oliver</h1>
+    <p class="instruction">Mohon isi dengan detail untuk peminjaman inventaris.</p>
+    
+    <form name="pinjamForm" ng-submit="submitOliverForm(pinjamForm, 'Pinjam')" novalidate> 
+      
+      <div><label>Nama Lengkap</label><input type="text" ng-model="oliverData.nama" required readonly /></div>
+      <div><label>Subseksi / Wilayah / Acara</label><input type="text" ng-model="oliverData.subseksi" required readonly /></div>
+      <div><label>Ruangan</label><input type="text" ng-model="oliverData.ruangan" required readonly /></div>
+      
+      <div><label>Tanggal Akses Gudang Oliver</label><input type="date" name="tanggal" ng-model="oliverData.tanggal" ng-change="updateDisabledCheckboxes()" min="{{today | date:'yyyy-MM-dd'}}" required /></div>
+      
+      <fieldset>
+        <legend><span class="material-icons">schedule</span>Waktu Akses Gudang Oliver</legend>
+        <div class="time">
+          <p style="color:#999;" ng-if="!chosen">Pilih tanggal untuk waktu akses Gudang.</p>
+          <div ng-if="waiting" class="loading">
+              <div class="dots-loader"><div></div><div></div><div></div></div>
+          </div>
+          
+          <label ng-repeat="waktu in waktuTersedia"
+                 ng-class="waktu.disabled ? 'time-checkboxes-disabled' : (waktu.checked ? 'time-checkboxes-checked' : 'time-checkboxes')">
+            <input type="checkbox"
+                  name="waktu"
+                  ng-value="waktu.label"
+                  ng-checked="waktu.checked"
+                  ng-click="toggleWaktu(waktu)"
+                  ng-disabled="waktu.disabled" />
+            <span>{{ waktu.label }}</span>
+          </label>
+          
+        </div>
+      </fieldset>
+      
+      <div>
+        <label>List Barang yang Dipinjam (beserta jumlah)</label>
+        <textarea name="list_barang" ng-model="oliverData.list_barang" placeholder="Contoh: TOA (1), Kabel Roll (2)" rows="3" required></textarea>
+      </div>
+      <div>
+        <label>Barang dipergunakan untuk acara apa dan keperluan apa?</label>
+        <input type="text" name="peruntukan" ng-model="oliverData.peruntukan" placeholder="Contoh: Acara Supercamp - untuk Promosi di Gereja" required />
+      </div>
+
+      <div>
+        <label>Foto bukti barang yang dipinjam</label>
+        <p style="color:#db2828; font-size:0.9rem;">*Fitur upload foto membutuhkan endpoint Apps Script terpisah untuk Google Drive. Untuk saat ini, harap foto dan kirim via WA setelah form ini di-submit.</p>
+      </div>
+      
+      <div><label>Tanggal Peminjaman Barang</label><input type="date" name="tgl_pinjam_barang" ng-model="oliverData.tgl_pinjam_barang" required /></div>
+      <div><label>Rencana Pengembalian</label><input type="date" name="rencana_kembali" ng-model="oliverData.rencana_kembali" required /></div>
+      <div><label>No WhatsApp</label><input type="tel" name="wa" ng-model="oliverData.wa" ng-pattern="/^08[0-9]{8,12}$/" required readonly /></div>
+      
+      <button type="submit" ng-disabled="pinjamForm.$invalid">Kirim Permintaan Peminjaman</button>
+      
+    </form>
+  </main>
+  <div class="spinner-container" ng-show="done"><div class="spinner"></div><b>Sedang mengirim permintaan pinjam barang...</b></div>
+  
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="../controller/oliver.js"></script> 
+</body>
+</html>

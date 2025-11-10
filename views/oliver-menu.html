@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="id" ng-app="formApp">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Gudang Oliver - SmartDoor Access</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/home.css"> </head>
+<body ng-controller="OliverController">
+  <main class="container" role="main">
+    <div class="logo-container">
+      <img src="../image/logo2.png" alt="Logo KTG" class="logo-img" />
+    </div>
+    <h1>Layanan Gudang Oliver</h1>
+    <p class="instruction">Pilih layanan yang ingin Anda lakukan di Gudang Oliver.</p>
+    
+    <div class="menu-options">
+      <a href="oliver-pinjam.html" class="menu-card primary">
+        <span class="material-icons">add_shopping_cart</span>
+        <h2>Pinjam Barang</h2>
+        <p>Mengajukan peminjaman inventaris dari gudang.</p>
+      </a>
+
+      <a href="oliver-kembali.html" class="menu-card primary">
+        <span class="material-icons">assignment_return</span>
+        <h2>Mengembalikan Barang</h2>
+        <p>Formulir untuk mencatat pengembalian inventaris.</p>
+      </a>
+
+      <a href="oliver-titip.html" class="menu-card primary">
+        <span class="material-icons">archive</span>
+        <h2>Menitipkan Barang</h2>
+        <p>Mencatat barang yang dititipkan di gudang Oliver.</p>
+      </a>
+      
+      <a href="oliver-lihat.html" class="menu-card secondary">
+        <span class="material-icons">search</span>
+        <h2>Melihat Barang yang Ada</h2>
+        <p>Mengajukan permintaan untuk melihat stok atau inventaris.</p>
+      </a>
+    </div>
+
+    <div class="logout-link">
+        <a href="home.html">← Kembali ke Menu Utama</a>
+    </div>
+
+  </main>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+  <script src="../controller/oliver.js"></script> </body>
+</html>

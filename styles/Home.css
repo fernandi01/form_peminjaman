@@ -1,0 +1,128 @@
+/* Duplikasi CSS dari login.css, hanya bagian .menu-options yang baru */
+/* Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Body */
+body {
+  font-family: 'Lexend', sans-serif;
+  background: linear-gradient(135deg, #A92028 0%, #1358A3 70%, #E7E0D5 100%);
+  color: #1e1e1e;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 32px 16px;
+}
+
+/* Container */
+.container {
+  background: rgba(243,234,219,0.95);
+  max-width: 500px;
+  width: 100%;
+  border-radius: 16px;
+  padding: 32px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+  text-align: center;
+}
+
+/* Logo */
+.logo-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.logo-img {
+  max-width: 60px;
+  height: auto;
+}
+
+/* Heading */
+h1 {
+  font-weight: 700;
+  font-size: 1.8rem;
+  margin-bottom: 12px;
+  color: #2062f7;
+}
+
+p.instruction {
+  font-weight: 500;
+  margin-bottom: 28px;
+  color: #db2828;
+  font-size: 1rem;
+}
+
+/* --- Menu Options Style --- */
+.menu-options {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.menu-card {
+    display: block;
+    padding: 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-align: left;
+    color: #f3eadb;
+    background: #2062f7; /* Default Blue */
+    border-bottom: 4px solid #1358A3;
+}
+
+.menu-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+}
+
+.menu-card.primary {
+    background: #db2828; /* Red for Oliver */
+    border-bottom: 4px solid #A92028;
+}
+
+.menu-card.secondary {
+    background: #6c757d; /* Gray for History */
+    border-bottom: 4px solid #5a6268;
+}
+
+.menu-card h2 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 5px;
+    color: inherit;
+}
+
+.menu-card p {
+    font-size: 0.9rem;
+    font-weight: 400;
+    color: rgba(243, 234, 219, 0.9);
+    margin: 0;
+}
+
+.menu-card span.material-icons {
+    float: right;
+    font-size: 36px;
+    color: #f3eadb;
+    margin-top: -5px;
+}
+
+.logout-link a {
+    color: #db2828;
+    text-decoration: none;
+    font-weight: 600;
+}
+.logout-link a:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 24px 20px;
+    }
+}

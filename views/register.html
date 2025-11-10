@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="id" ng-app="formApp">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Registrasi Akun - SmartDoor Access</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/register.css"> <!-- Gunakan CSS yang sama -->
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<body ng-controller="RegisterController">
+  <main class="container" role="main" ng-show="!done">
+    <div class="logo-container">
+      <img src="../image/logo2.png" alt="Logo KTG" class="logo-img" />
+    </div>
+    <div>
+      <h1>Registrasi Akun Baru</h1>
+      <p class="instruction">Daftarkan akun Anda untuk Mengakses.</p>
+      <form name="registerForm" ng-submit="submitRegistration()" novalidate>
+        <div>
+          <label>Username</label>
+          <input type="text" name="username" ng-model="regData.username" placeholder="Pilih username" required />
+        </div>
+        <div>
+          <label>Password</label>
+          <input type="password" name="password" ng-model="regData.password" placeholder="Buat password" required />
+        </div>
+        <div>
+          <label>Konfirmasi Password</label>
+          <input type="password" name="confirmPassword" ng-model="regData.confirmPassword" placeholder="Konfirmasi password" required />
+          <p ng-if="regData.password && regData.confirmPassword && regData.password !== regData.confirmPassword" class="error-message">Password tidak cocok!</p>
+        </div>
+        <div>
+          <label>Nama Lengkap</label>
+          <input type="text" name="nama" ng-model="regData.nama" placeholder="Masukkan nama lengkap" required />
+        </div>
+        <div>
+          <label>Subseksi / Wilayah / Acara</label>
+          <input type="text" name="subseksi" ng-model="regData.subseksi" placeholder="Masukkan subseksi, wilayah atau acara" required />
+        </div>
+        <div>
+          <label>No WhatsApp</label>
+          <input type="tel" name="wa" ng-model="regData.wa" ng-pattern="/^08[0-9]{8,12}$/" placeholder="081234567890" required />
+        </div>
+        <button type="submit" ng-disabled="registerForm.$invalid || regData.password !== regData.confirmPassword">Daftar Sekarang</button>
+      </form>
+      <p style="text-align: center; margin-top: 20px;">Sudah punya akun? <a href="login.html">Login di sini</a></p>
+    </div>
+  </main>
+  <div class="spinner-container" ng-show="done">
+    <div class="spinner"></div>
+    <b>Sedang mendaftarkan akun Anda...</b>
+  </div>
+
+  <script src="../controller/form.js"></script> <!-- Atau buat register.js terpisah -->
+</body>
+</html>
